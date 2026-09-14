@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aanvraagformulier lidmaatschap Hermes-DVS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+:root{
+  --navy:#122433; --navy-2:#2C3F4F; --sky:#95C1E8; --sky-dark:#6FA8D8;
+  --sand:#E8C895; --bg:#F2F6FA; --card:#fff; --line:#D7E2EC;
+  --muted:#5D7183; --err:#B3261E; --radius:4px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);
+  font:16px/1.5 "PT Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+
+.topbar{background:#fff;border-bottom:1px solid var(--line)}
+.topbar .in{max-width:880px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px}
+.topbar img{width:64px;height:64px;flex:0 0 auto}
+.topbar .nm{font-weight:700;font-size:19px;line-height:1.2}
+.topbar .sub{font-size:13.5px;color:var(--muted)}
+.band{background:var(--sky);height:8px}
+.hero{background:var(--navy);color:#fff}
+.hero .in{max-width:880px;margin:0 auto;padding:26px 16px 28px}
+.hero h1{margin:0 0 6px;font-size:27px;font-weight:700;line-height:1.2}
+.hero p{margin:0;font-size:15px;color:#D6E4F0;max-width:62ch}
+
+.wrap{max-width:880px;margin:0 auto;padding:26px 16px 80px}
+.disclaimer{background:#fff;border:1px solid var(--line);border-left:4px solid var(--sand);
+  border-radius:var(--radius);padding:14px 18px;margin:0 0 20px;font-size:14.5px;color:var(--navy-2)}
+
+fieldset{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--sand);
+  border-radius:var(--radius);margin:0 0 18px;padding:10px 22px 20px}
+legend{font-weight:700;font-size:17px;color:var(--navy);padding:0 8px}
+.row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.row:last-child{margin-bottom:0}
+.f{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:5px}
+.f.sm{flex:0 1 130px}
+.f.lg{flex:1 1 100%}
+label{font-size:14px;font-weight:700;color:var(--navy-2)}
+label .req{color:var(--err)}
+/* 16px is bewust: onder de 16px zoomt iOS Safari automatisch in bij focus. */
+input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{
+  font:inherit;font-size:16px;padding:10px 11px;border:1px solid var(--line);border-radius:var(--radius);
+  background:#fff;color:var(--navy);width:100%;-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
+  linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 17px) 52%,calc(100% - 12px) 52%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+input[type=date]{-webkit-appearance:none;min-height:44px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--sky-dark);outline-offset:-1px;border-color:var(--sky-dark)}
+textarea{resize:vertical;min-height:84px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);
+  border-radius:var(--radius);cursor:pointer;background:#fff;font-size:15px}
+.opt:hover{border-color:var(--sky-dark);background:#FAFCFE}
+.opt input{margin:3px 0 0;accent-color:var(--navy)}
+.opt .t{font-weight:700}
+.opt .d{font-size:13.5px;color:var(--muted)}
+.sportrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.grp{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--muted);margin:14px 0 8px}
+.grp:first-child{margin-top:0}
+.hint{font-size:13.5px;color:var(--muted);margin:2px 0 0}
+.nood{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;color:var(--muted);
+  font-weight:400;cursor:pointer;margin-top:2px}
+.nood input{margin:2px 0 0;accent-color:var(--navy)}
+
+/* Voorwaarden */
+details.vw{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;background:#FAFCFE}
+details.vw summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:15px;color:var(--navy)}
+details.vw[open] summary{border-bottom:1px solid var(--line)}
+details.vw .bd{padding:12px 16px 14px;font-size:14px;color:var(--navy-2)}
+details.vw .bd ol{margin:0;padding-left:20px}
+details.vw .bd li{margin-bottom:7px}
+details.vw .bd p{margin:0 0 9px}
+
+.sigbox{border:1px dashed var(--line);border-radius:var(--radius);background:#fff;padding:8px}
+canvas#sig{width:100%;height:180px;display:block;border-radius:3px;touch-action:none;cursor:crosshair;
+  background:#fff linear-gradient(to right,transparent 24px,var(--line) 24px,var(--line) calc(100% - 24px),transparent calc(100% - 24px))
+    no-repeat 0 146px/100% 1px}
+.sigbar{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:10px;flex-wrap:wrap}
+button{font:inherit;font-weight:700;padding:9px 18px;border-radius:var(--radius);
+  border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer}
+button:hover{border-color:var(--sky-dark)}
+button.primary{background:var(--sky);border-color:var(--sky);color:var(--navy);padding:13px 28px;font-size:17px}
+button.primary:hover{background:var(--sky-dark);border-color:var(--sky-dark);color:#fff}
+button.primary:disabled{opacity:.55;cursor:not-allowed}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.err{color:var(--err);font-size:13.5px;display:none;font-weight:700}
+.f.invalid input,.f.invalid select{border-color:var(--err)}
+.f.invalid .err{display:block}
+#status{margin-top:16px;font-size:15px;padding:13px 15px;border-radius:var(--radius);display:none}
+#status.ok{display:block;background:#EAF3FB;border:1px solid var(--sky);color:var(--navy)}
+#status.bad{display:block;background:#FDECEA;border:1px solid #F0B4AE;color:#7F1D1D}
+#status a{color:var(--navy)}
+.hidden{display:none!important}
+
+/* Codevenster */
+#slot{position:fixed;inset:0;background:var(--navy);z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:24px}
+#slot .kaart{background:#fff;border-radius:var(--radius);padding:28px 26px;max-width:400px;width:100%;
+  text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+#slot img{width:76px;height:76px;margin-bottom:14px}
+#slot h2{margin:0 0 6px;font-size:20px}
+#slot p{margin:0 0 18px;font-size:14.5px;color:var(--muted)}
+#slot input{text-align:center;letter-spacing:2px;font-weight:700;margin-bottom:12px}
+#slot button{width:100%;background:var(--sky);border-color:var(--sky);padding:12px}
+#slot .fout{color:var(--err);font-size:14px;font-weight:700;margin-top:12px;display:none}
+body.vergrendeld{overflow:hidden}
+footer.ft{background:var(--navy);color:#B8CBDB;font-size:13.5px}
+footer.ft .in{max-width:880px;margin:0 auto;padding:18px 16px}
+@media (max-width:560px){.f,.f.sm{flex:1 1 100%}.hero h1{font-size:22px}.topbar img{width:52px;height:52px}}
+</style>
+</head>
+<body>
+
+<div id="slot" class="hidden">
+  <div class="kaart">
+    <img id="slotLogo" alt="">
+    <h2>Toegangscode</h2>
+    <p id="slotUitleg"></p>
+    <input type="password" id="slotCode" inputmode="text" autocomplete="off"
+           autocapitalize="characters" placeholder="Code" aria-label="Toegangscode">
+    <button type="button" id="slotOk">Openen</button>
+    <div class="fout" id="slotFout">Onjuiste code.</div>
+  </div>
+</div>
+
+<div class="topbar"><div class="in">
+  <img id="logo" alt="Logo Hermes-DVS" src="https://www.hermesdvs.nl/images/2016/logo.png">
+  <div><div class="nm" id="clubNm">C &amp; FC Hermes-DVS</div>
+       <div class="sub" id="clubSlogan">Verrassend veelzijdig</div></div>
+</div></div>
+<div class="band"></div>
+<div class="hero"><div class="in">
+  <h1>Aanvraagformulier lidmaatschap</h1>
+  <p>Vul het formulier in, onderteken onderaan en verstuur. Je ontvangt zelf een PDF-kopie
+     van de aanvraag.</p>
+</div></div>
+
+<div class="wrap">
+<div class="disclaimer" id="disclaimer"></div>
+
+<form id="frm" novalidate>
+
+  <fieldset>
+    <legend>Sport</legend>
+    <div class="f lg">
+      <label>Voor welke sport wil je lid worden? <span class="req">*</span></label>
+      <div class="sportrow" id="sportRow"></div>
+      <span class="err">Maak een keuze.</span>
+      <p class="hint">Wil je bij meerdere afdelingen lid worden, vul dan per sport een formulier in.</p>
+    </div>
+  </fieldset>
+
+  <fieldset id="lidBlock">
+    <legend>Lidmaatschap</legend>
+    <div class="f lg" id="lidTypeField">
+      <label>Type lidmaatschap <span class="req">*</span></label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="lid" value="164">
+          <span><span class="t">Spelend lid</span><br><span class="d">Voetbal — Algemeen/Veld</span></span></label>
+        <label class="opt"><input type="radio" name="lid" value="UnionMembership">
+          <span><span class="t">Niet-spelend (bondslid)</span><br><span class="d">Bijvoorbeeld trainers en scheidsrechters</span></span></label>
+        <label class="opt"><input type="radio" name="lid" value="Membership">
+          <span><span class="t">Verenigingslid</span><br><span class="d">Voor wie niet in de competitie speelt</span></span></label>
+      </div>
+      <span class="err">Maak een keuze.</span>
+    </div>
+
+    <div class="row">
+      <div class="f">
+        <label>Ben je eerder lid geweest van Hermes-DVS? <span class="req">*</span></label>
+        <div class="opts" style="flex-direction:row">
+          <label class="opt" style="flex:1"><input type="radio" name="eerder_hdvs" value="0" checked> <span class="t">Nee</span></label>
+          <label class="opt" style="flex:1"><input type="radio" name="eerder_hdvs" value="1"> <span class="t">Ja</span></label>
+        </div>
+      </div>
+      <div class="f">
+        <label>Ben je lid geweest bij een andere vereniging? <span class="req">*</span></label>
+        <div class="opts" style="flex-direction:row">
+          <label class="opt" style="flex:1"><input type="radio" name="previous_membership" value="0" checked> <span class="t">Nee</span></label>
+          <label class="opt" style="flex:1"><input type="radio" name="previous_membership" value="1"> <span class="t">Ja</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div id="prevBlock" class="hidden">
+      <div class="row">
+        <div class="f"><label for="membership_clubname">Naam vorige vereniging</label>
+          <input type="text" id="membership_clubname" name="membership_clubname"></div>
+        <div class="f sm"><label for="end">Lid tot en met</label>
+          <select id="end" name="end"><option value="">—</option></select></div>
+        <div class="f sm" id="relField"><label for="relationnumber">Relatienummer</label>
+          <input type="text" id="relationnumber" name="relationnumber" placeholder="ABC12A1"></div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Gegevens van het lid</legend>
+    <div class="row">
+      <div class="f">
+        <label>Geslacht <span class="req">*</span></label>
+        <div class="opts" style="flex-direction:row">
+          <label class="opt" style="flex:1"><input type="radio" name="gender" value="m"> <span class="t">Man</span></label>
+          <label class="opt" style="flex:1"><input type="radio" name="gender" value="f"> <span class="t">Vrouw</span></label>
+        </div>
+        <span class="err">Maak een keuze.</span>
+      </div>
+      <div class="f"><label for="birthdate">Geboortedatum <span class="req">*</span></label>
+        <input type="date" id="birthdate" name="birthdate" required>
+        <span class="err">Vul een geldige geboortedatum in.</span></div>
+    </div>
+    <div class="row">
+      <div class="f"><label for="firstname">Voorna(a)m(en) <span class="req">*</span></label>
+        <input type="text" id="firstname" name="firstname" autocomplete="given-name" required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f sm"><label for="initials">Voorletters <span class="req">*</span></label>
+        <input type="text" id="initials" name="initials" placeholder="B.J." required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f sm"><label for="infix">Tussenvoegsel</label>
+        <input type="text" id="infix" name="infix"></div>
+      <div class="f"><label for="lastname">Achternaam <span class="req">*</span></label>
+        <input type="text" id="lastname" name="lastname" autocomplete="family-name" required>
+        <span class="err">Verplicht.</span></div>
+    </div>
+    <div class="row">
+      <div class="f"><label for="nationality">Nationaliteit <span class="req">*</span></label>
+        <select id="nationality" name="nationality" required></select>
+        <span class="err">Maak een keuze.</span></div>
+      <div class="f"><label for="nationality_second">Tweede nationaliteit</label>
+        <select id="nationality_second" name="nationality_second"></select></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Legitimatie</legend>
+    <p class="hint" style="margin:0 0 14px">De KNVB verplicht verenigingen de identiteit van nieuwe
+      leden vast te stellen. Deze gegevens worden uitsluitend voor de ledenadministratie gebruikt.</p>
+    <div class="row">
+      <div class="f"><label for="legitimatie_soort">Soort legitimatiebewijs <span class="req">*</span></label>
+        <select id="legitimatie_soort" name="legitimatie_soort" required>
+          <option value="">— Maak een keuze —</option>
+          <option>Paspoort</option>
+          <option>Identiteitskaart</option>
+          <option>Rijbewijs</option>
+          <option>Verblijfsdocument</option>
+          <option>Anders</option>
+        </select>
+        <span class="err">Maak een keuze.</span></div>
+      <div class="f"><label for="legitimatie_nummer">Documentnummer <span class="req">*</span></label>
+        <input type="text" id="legitimatie_nummer" name="legitimatie_nummer" autocomplete="off" required>
+        <span class="err">Verplicht.</span></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Adres</legend>
+    <div class="row">
+      <div class="f"><label for="country">Land <span class="req">*</span></label>
+        <select id="country" name="country" required>
+          <option value="NL" selected>Nederland</option>
+          <option value="BE">België</option>
+          <option value="DE">Duitsland</option>
+          <option value="OV">Overig</option>
+        </select></div>
+      <div class="f sm"><label for="postalcode">Postcode <span class="req">*</span></label>
+        <input type="text" id="postalcode" name="postalcode" placeholder="3117 AB" autocomplete="postal-code" required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f sm"><label for="housenumber">Huisnummer <span class="req">*</span></label>
+        <input type="text" id="housenumber" name="housenumber" required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f sm"><label for="annex">Toevoeging</label>
+        <input type="text" id="annex" name="annex"></div>
+    </div>
+    <div class="row">
+      <div class="f"><label for="streetname">Straatnaam <span class="req">*</span></label>
+        <input type="text" id="streetname" name="streetname" autocomplete="street-address" required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f"><label for="city">Woonplaats <span class="req">*</span></label>
+        <input type="text" id="city" name="city" autocomplete="address-level2" required>
+        <span class="err">Verplicht.</span></div>
+    </div>
+  </fieldset>
+
+  <!-- Eén contactblok. Bij een lid onder de 18 wisselt dit blok volledig naar
+       de gegevens van de ouder/verzorger. -->
+  <fieldset id="contactBlock">
+    <legend id="contactLegend">Contactgegevens</legend>
+    <p class="hint" id="contactHint" style="margin:0 0 14px"></p>
+
+    <div class="row hidden" id="contactNameRow">
+      <div class="f lg"><label for="contact_name">Naam ouder(s) / verzorger(s) <span class="req">*</span></label>
+        <input type="text" id="contact_name" name="contact_name" autocomplete="name">
+        <span class="err">Verplicht.</span></div>
+    </div>
+
+    <div class="row">
+      <div class="f">
+        <label for="contact_phone1" id="lblPhone1">Mobiel telefoonnummer <span class="req">*</span></label>
+        <input type="tel" id="contact_phone1" name="contact_phone1" autocomplete="tel" required>
+        <span class="err">Vul een geldig telefoonnummer in.</span>
+        <label class="nood"><input type="checkbox" id="contact_phone1_nood" checked>
+          <span>Mag gebruikt worden als noodnummer tijdens trainingen en wedstrijden</span></label>
+      </div>
+      <div class="f">
+        <label for="contact_phone2" id="lblPhone2">Tweede telefoonnummer</label>
+        <input type="tel" id="contact_phone2" name="contact_phone2">
+        <span class="err">Vul een geldig telefoonnummer in.</span>
+        <label class="nood"><input type="checkbox" id="contact_phone2_nood">
+          <span>Mag gebruikt worden als noodnummer tijdens trainingen en wedstrijden</span></label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="f"><label for="contact_email" id="lblEmail">E-mailadres <span class="req">*</span></label>
+        <input type="email" id="contact_email" name="contact_email" autocomplete="email" required>
+        <span class="err">Vul een geldig e-mailadres in.</span></div>
+      <div class="f"><label for="contact_email_repeat">Herhaal e-mailadres <span class="req">*</span></label>
+        <input type="email" id="contact_email_repeat" name="contact_email_repeat" required>
+        <span class="err">De e-mailadressen komen niet overeen.</span></div>
+    </div>
+
+    <div class="row hidden" id="memberEmailRow">
+      <div class="f lg"><label for="member_email">E-mailadres van het lid zelf <span class="hint" style="font-weight:400">(optioneel)</span></label>
+        <input type="email" id="member_email" name="member_email">
+        <span class="err">Vul een geldig e-mailadres in.</span></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Vrijwilligerswerk</legend>
+    <p class="hint" style="margin:0 0 12px" id="vrijwHint"></p>
+    <div id="volGroups"></div>
+    <div class="row" style="margin-top:14px">
+      <div class="f lg"><label for="vrijwillig_overig">Overig</label>
+        <input type="text" id="vrijwillig_overig" name="vrijwillig_overig"
+               placeholder="Andere bijdrage die je zou kunnen leveren"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Opmerkingen / bijzonderheden</legend>
+    <div class="f lg"><label for="question">Vraag, opmerking of bijzonderheid</label>
+      <textarea id="question" name="question"></textarea></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Voorwaarden</legend>
+    <p class="hint" style="margin:0 0 14px">Lees de voorwaarden door. De volledige tekst komt
+      ook in de PDF te staan die je ondertekent.</p>
+    <div id="vwBlokken"></div>
+
+    <div class="opts" style="margin-top:16px" id="consents">
+      <label class="opt"><input type="checkbox" id="c_ledenadmin" required>
+        <span><span class="t">Verwerking ledenadministratie <span class="req">*</span></span><br>
+        <span class="d">Ik geef toestemming om mijn gegevens in de ledenadministratie van
+        Hermes-DVS te verwerken en op te nemen.</span></span></label>
+
+      <label class="opt"><input type="checkbox" id="c_communicatie" required>
+        <span><span class="t">Actuele contactgegevens <span class="req">*</span></span><br>
+        <span class="d">Ik weet dat Hermes-DVS en ingeschakelde bedrijven (zoals Club Collect)
+        via e-mail communiceren, en dat ik wijzigingen in mijn e-mailadres of mobiele nummer
+        direct en schriftelijk moet doorgeven.</span></span></label>
+
+      <label class="opt"><input type="checkbox" id="c_contributie" required>
+        <span><span class="t">Contributie en beëindiging <span class="req">*</span></span><br>
+        <span class="d">Ik ga akkoord met de contributievoorwaarden en de voorwaarden voor
+        beëindiging van het lidmaatschap, zoals hierboven beschreven.</span></span></label>
+
+      <label class="opt"><input type="checkbox" id="c_normen" required>
+        <span><span class="t">Normen en waarden <span class="req">*</span></span><br>
+        <span class="d">Ik heb kennisgenomen van en kan mij verenigen met
+        <a id="normenLink" href="#" target="_blank" rel="noopener">"de 10 van Hermes-DVS"</a>.</span></span></label>
+
+      <label class="opt hidden" id="gedragRij"><input type="checkbox" id="c_gedragscode">
+        <span><span class="t">Gedragsregels jeugd <span class="req">*</span></span><br>
+        <span class="d">Ik heb kennisgenomen van en ga akkoord met de
+        <a id="gedragLink" href="#" target="_blank" rel="noopener">extra gedragsregels voor
+        jeugdspelers</a> van het jeugdbestuur.</span></span></label>
+
+      <label class="opt"><input type="checkbox" id="c_beeld">
+        <span><span class="t">Beeldmateriaal <span class="hint" style="font-weight:400">(optioneel)</span></span><br>
+        <span class="d">Ik geef toestemming om beeldmateriaal en tekst van wedstrijden,
+        evenementen en activiteiten waarop ik te zien ben te delen op social media, de website
+        en andere platforms van Hermes-DVS. Deze toestemming kan ik later intrekken via
+        <span id="ledenMail"></span>.</span></span></label>
+    </div>
+    <span class="err" id="consentErr">Je moet akkoord gaan met de verplichte onderdelen.</span>
+  </fieldset>
+
+  <fieldset>
+    <legend>Ondertekening</legend>
+    <div class="f lg" id="sigField">
+      <label>Handtekening <span class="req">*</span></label>
+      <p class="hint" style="margin:0 0 8px" id="sigWho">Teken hieronder met je muis of vinger.</p>
+      <div class="sigbox">
+        <canvas id="sig"></canvas>
+        <div class="sigbar">
+          <span class="hint" id="sigMeta">Nog niet ondertekend</span>
+          <button type="button" id="sigClear">Wissen</button>
+        </div>
+      </div>
+      <span class="err">Een handtekening is verplicht.</span>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="f"><label for="naam_blokletters">Naam in blokletters <span class="req">*</span></label>
+        <input type="text" id="naam_blokletters" name="naam_blokletters" style="text-transform:uppercase" required>
+        <span class="err">Verplicht.</span></div>
+      <div class="f"><label for="plaats_ondertekening">Plaats van ondertekening <span class="req">*</span></label>
+        <input type="text" id="plaats_ondertekening" name="plaats_ondertekening" required>
+        <span class="err">Verplicht.</span></div>
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <button type="submit" class="primary" id="submitBtn">Aanvraag versturen</button>
+    <button type="button" id="previewBtn">Alleen PDF bekijken</button>
+  </div>
+  <div id="status"></div>
+</form>
+</div>
+
+<footer class="ft"><div class="in">
+  Na ondertekening maakt dit formulier een PDF aan. De coördinator verstuurt die naar het
+  opgegeven e-mailadres en naar de ledenadministratie.
+</div></footer>
+
+<script>
+/* ============================================================================
+   CONFIGURATIE — pas dit blok aan, de rest hoef je niet te wijzigen
+   ========================================================================== */
+const CONFIG = {
+  clubNaam:      'C & FC Hermes-DVS',
+  clubKort:      'Hermes-DVS',
+  slogan:        'Verrassend veelzijdig',
+  seizoen:       '2026/2027',
+  normenUrl:      'https://www.hermesdvs.nl/normen-waarden',
+  gedragscodeUrl: 'https://www.hermesdvs.nl/gedragscode',
+
+  /* Tot en met welke leeftijd geldt iemand als jeugdspeler. Bepaalt of de
+     extra gedragsregels van het jeugdbestuur getoond worden. 18 = t/m 18 jaar
+     (O19 valt hier nog onder). */
+  jeugdTotLeeftijd: 18,
+
+  /* TOEGANGSCODE
+     Leeg laten = formulier is voor iedereen met de link toegankelijk.
+     Een code invullen zet er een codevenster voor.
+
+     LET OP: dit is een drempel, geen slot. De code staat in de broncode van
+     deze pagina en is met "paginabron weergeven" te vinden. Het houdt
+     toevallige bezoekers tegen, niet iemand die echt binnen wil. Wil je echte
+     toegangscontrole, regel die dan bij de host (zie projectnotitie). */
+  toegangscode:  'HDVS2026',
+  toegangsUitleg: 'Dit formulier wordt ingevuld door een coördinator van de vereniging.',
+
+  /* E-mailadres van de ledenadministratie. Wordt genoemd in de voorwaarden
+     (opzeggen, wijzigingen doorgeven, toestemming intrekken), staat op de PDF
+     en wordt na ondertekening getoond als tweede geadresseerde.
+     Leeg laten = overal "de ledenadministratie" zonder adres. */
+  ledenadministratieEmail: 'ledenadministratie@hermesdvs.nl',
+
+  /* Toestemming beeldmateriaal standaard aangevinkt tonen.
+     Zie de projectnotitie: onder de AVG is een voorgevinkt vakje geen geldige
+     toestemming. Op false zetten maakt het weer een bewuste keuze. */
+  beeldStandaardAan: true,
+
+  logoUrl:     'https://www.hermesdvs.nl/images/2016/logo.png',
+  logoDataUri: 'data:image/png;base64,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',
+
+  sporten: ['Voetbal', 'Cricket', 'Squash', 'Rugby'],
+
+  disclaimer:
+    'Dit formulier betreft een aanvraagformulier. Het invullen en ondertekenen ervan geeft geen ' +
+    'garantie dat je daadwerkelijk lid kunt worden van Hermes-DVS. Of je lid kunt worden is geheel ' +
+    'ter beoordeling aan Hermes-DVS.',
+
+  /* Opzegdata per sport — vul de ontbrekende data aan zodra ze bekend zijn. */
+  opzegdata: { Voetbal: '15 juni', Cricket: '', Squash: '', Rugby: '' },
+
+  /* De 10 van Hermes-DVS, overgenomen van hermesdvs.nl/normen-waarden.
+     Geldt voor iedereen die bij de club betrokken is. */
+  normen: {
+    titel: 'De 10 van Hermes-DVS',
+    intro: 'Iedereen die betrokken is bij onze club houdt zich aan "de 10 van Hermes". ' +
+           'Deze gedragsregels zorgen ervoor dat iedereen zich welkom en thuis voelt.',
+    items: [
+      'We gebruiken geen fysiek en verbaal geweld bij het sporten, langs de lijn of in het clubhuis.',
+      'We accepteren de beslissingen van de scheidsrechter.',
+      'We blijven sportief; onsportieve tegenstanders zijn geen excuus.',
+      'We gaan respectvol met de spullen van de club om.',
+      'We branden sporters niet af wanneer ze verliezen.',
+      'We geven ieder gelijke kansen om lid van Hermes DVS te worden.',
+      'We accepteren dat leden ook andere interesses hebben dan sporten bij Hermes DVS.',
+      'We spannen ons in om in het Nederlands met elkaar te communiceren.',
+      'We accepteren dat ons lidmaatschap naast rechten ook plichten kent.',
+      'Wanneer we van iets of iemand last hebben, kaarten we dat bij de betrokkene(n) aan: we gaan niet roddelen.'
+    ]
+  },
+
+  /* Extra gedragsregels van het jeugdbestuur, van hermesdvs.nl/gedragscode.
+     Worden alleen getoond bij een jeugdspeler. */
+  gedragscode: {
+    titel: 'Extra gedragsregels jeugd',
+    intro: 'Het jeugdbestuur vraagt aandacht voor een aantal extra gedragsregels ' +
+           'waaraan iedere jeugdspeler zich moet houden.',
+    items: [
+      'Draag officiële wedstrijdkleding.',
+      'Doe serieus mee met wedstrijden en trainingen.',
+      'Gedraag je niet agressief.',
+      'Accepteer leiding van trainer en leider.',
+      'Laat medespelers niet wachten en laat ze zeker niet zonder bericht in de steek.',
+      'Ruim je eigen afval op en laat kleedkamers schoon achter.'
+    ],
+    slot: 'Bij overtreding van een van deze gedragsregels volgt een waarschuwing, ' +
+          'een schorsing, een geldboete of zelfs een royement.'
+  },
+
+  /* De voorwaarden zoals ze op het papieren aanvraagformulier staan.
+     Pas deze teksten hier aan; ze verschijnen zowel op de pagina als in de PDF. */
+  voorwaarden: [
+    { titel: 'Contributie', items: [
+      'Je kunt op onze website nazien hoeveel de contributie bedraagt. De contributie kan in de toekomst eventueel wijzigen.',
+      'Facturatie en het incasseren van de contributie wordt uitgevoerd door Club Collect.',
+      'Zodra de factuur verstuurd is c.q. je de contributie verschuldigd bent, krijg je de gelegenheid om de contributie in 4 maandelijkse opeenvolgende termijnen te voldoen. Overige c.q. afwijkende regelingen zijn niet mogelijk.',
+      'De contributie dient uiterlijk binnen vier maanden na verzending van de factuur in zijn geheel te zijn voldaan.',
+      'Het is je eigen verantwoordelijkheid om zorg te dragen voor tijdige betaling. Het niet ontvangen van een factuur ontslaat je niet van de verplichting om contributie te betalen. Ontvang je geen factuur, neem dan contact op met Club Collect.',
+      'Indien de contributie niet tijdig is voldaan, word je uitgesloten van wedstrijden en trainingen totdat de contributie in zijn geheel is voldaan.',
+      'Hermes-DVS stemt zijn begroting voor het hele seizoen af op het aantal leden bij aanvang van het seizoen. Bij tussentijdse beëindiging van het lidmaatschap blijft de gehele contributie verschuldigd, ongeacht de reden van de beëindiging.',
+      'Is je aanvraag goedgekeurd en ben je dus lid van Hermes-DVS, dan ben je de gehele contributie voor het betreffende seizoen verschuldigd en vindt er om geen enkele reden restitutie plaats van de contributie of een deel daarvan.'
+    ]},
+    { titel: 'Beëindiging lidmaatschap', items: [
+      'Wil je je lidmaatschap beëindigen, dan dien je te hebben opgezegd vóór de opzegdatum die voor jouw sport geldt. {OPZEGDATA} Opzegging dient uitsluitend schriftelijk plaats te vinden. Zeg je per brief op, dan dien je de brief aangetekend te versturen. Je kunt eventueel ook per e-mail opzeggen, via {EMAIL}. Het is je eigen verantwoordelijkheid dat de opzegging Hermes-DVS tijdig bereikt. Heb je niet tijdig opgezegd, dan wordt je lidmaatschap weer voor een volledig seizoen verlengd en ben je uiteraard ook de gehele contributie verschuldigd.',
+      'Houd je je niet aan de normen en waarden die door Hermes-DVS zijn opgesteld, of vertoon je op andere wijze wan- c.q. misplaatst gedrag, of breng je de vereniging op welke wijze dan ook in diskrediet — zulks uitsluitend ter beoordeling aan Hermes-DVS — dan behoudt Hermes-DVS zich het recht voor het lidmaatschap eenzijdig te beëindigen, zonder verdere onderbouwing c.q. uitleg, waarbij je geen recht hebt op restitutie van de contributie, een deel daarvan, of op welke compensatie dan ook.'
+    ]},
+    { titel: 'Communicatie', items: [
+      'Hermes-DVS of door Hermes-DVS ingeschakelde bedrijven, zoals Club Collect die de contributie factureert en incasseert, maken veelvuldig gebruik van communicatie via e-mail. Ook is het van belang dat wij een actueel mobiel telefoonnummer van je hebben.',
+      'Er dient dan ook altijd een actueel e-mailadres en mobiel telefoonnummer bij ons bekend te zijn. Wijzigt je e-mailadres en/of mobiele nummer, dan dien je dit direct en uitsluitend schriftelijk aan ons kenbaar te maken, eventueel per e-mail via {EMAIL}.',
+      'Mochten stukken of informatie je niet bereiken omdat wij geen actueel e-mailadres van je hebben, dan is dit voor je eigen rekening en verantwoording en kan Hermes-DVS hiervoor niet verantwoordelijk worden gehouden.'
+    ]}
+  ]
+};
+
+/* Vrijwilligerstaken. De algemene groep komt van het papieren formulier; de
+   specifieke groep zijn de Sportlink/KNVB-taken en is alleen voor voetbal. */
+const VRIJWILLIGERSTAKEN = [
+  { groep: 'Algemeen', sport: null, items: [
+    { id: 'alg-leider',      label: 'Leider / trainer' },
+    { id: 'alg-bardienst',   label: 'Bardienst' },
+    { id: 'alg-scheids',     label: 'Scheidsrechter' },
+    { id: 'alg-commissie',   label: 'Commissie- of bestuursfunctie' }
+  ]},
+  { groep: 'Specifieke taken (voetbal)', sport: 'Voetbal', items: [
+    { id: 301, label: 'Bardienst vrijdagavond' },        { id: 1,   label: 'Bardienst dinsdag/donderdag' },
+    { id: 82,  label: 'Bardienst zaterdagmiddag' },      { id: 81,  label: 'Bardienst zaterdagochtend' },
+    { id: 61,  label: 'Commissiedienst' },               { id: 83,  label: 'Keukendienst' },
+    { id: 101, label: 'Scheidsrechter JO13 t/m JO19' },  { id: 401, label: 'Schoonmaak dinsdag' },
+    { id: 102, label: 'Spelbegeleider JO7 t/m JO11' },
+    { id: 161, label: 'Vlagger JO13-1' }, { id: 162, label: 'Vlagger JO13-2' }, { id: 163, label: 'Vlagger JO13-3' },
+    { id: 165, label: 'Vlagger JO15-1' }, { id: 166, label: 'Vlagger JO15-2' }, { id: 167, label: 'Vlagger JO15-3' },
+    { id: 168, label: 'Vlagger JO17-1' }, { id: 169, label: 'Vlagger JO17-2' },
+    { id: 171, label: 'Vlagger JO19-1' }, { id: 172, label: 'Vlagger JO19-2' },
+    { id: 221, label: 'Vrijwilligerscoördinator jeugdvoetbal' },
+    { id: 222, label: 'Vrijwilligerscoördinator seniorvoetbal' },
+    { id: 223, label: 'Vrijwilligerscoördinator rugby' },
+    { id: 224, label: 'Vrijwilligerscoördinator cricket' },
+    { id: 225, label: 'Vrijwilligerscoördinator squash' }
+  ]}
+];
+
+const NATIONALITEITEN = ['Nederlandse','Belgische','Duitse','Marokkaanse','Turkse','Poolse',
+  'Surinaamse','Antilliaanse','Kaapverdische','Britse','Franse','Spaanse','Italiaanse',
+  'Portugese','Roemeense','Bulgaarse','Syrische','Oekraïense','Overig'];
+
+const LID_LABELS = {
+  '164':'Spelend lid (Voetbal — Algemeen/Veld)',
+  'UnionMembership':'Niet-spelend (bondslid)',
+  'Membership':'Verenigingslid'
+};
+
+/* ============================================================================
+   OPBOUW VAN DE DYNAMISCHE ONDERDELEN
+   ========================================================================== */
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* ============================================================================
+   TOEGANGSCODE
+   Een drempel, geen slot: de code staat in de broncode van deze pagina en is
+   met "paginabron weergeven" te vinden. Het houdt toevallige bezoekers tegen,
+   niet iemand die echt binnen wil. Voor echte toegangscontrole is een
+   voorziening bij de host nodig.
+   ========================================================================== */
+const SLOT_SLEUTEL = 'hdvs-formulier-ontgrendeld';
+
+function slotOpenen() {
+  $('#slot').classList.add('hidden');
+  document.body.classList.remove('vergrendeld');
+  try { sessionStorage.setItem(SLOT_SLEUTEL, '1'); } catch (e) { /* privémodus */ }
+}
+
+function slotInstellen() {
+  const code = (CONFIG.toegangscode || '').trim();
+  if (!code) return;                                  // geen code ingesteld
+  let al = false;
+  try { al = sessionStorage.getItem(SLOT_SLEUTEL) === '1'; } catch (e) { /* privémodus */ }
+  if (al) return;
+
+  $('#slot').classList.remove('hidden');
+  document.body.classList.add('vergrendeld');
+  $('#slotUitleg').textContent = CONFIG.toegangsUitleg || '';
+  const logo = CONFIG.logoDataUri || CONFIG.logoUrl;
+  if (logo) $('#slotLogo').src = logo; else $('#slotLogo').style.display = 'none';
+
+  const probeer = () => {
+    if ($('#slotCode').value.trim().toLowerCase() === code.toLowerCase()) slotOpenen();
+    else {
+      $('#slotFout').style.display = 'block';
+      $('#slotCode').value = '';
+      $('#slotCode').focus();
+    }
+  };
+  $('#slotOk').addEventListener('click', probeer);
+  $('#slotCode').addEventListener('keydown', e => { if (e.key === 'Enter') probeer(); });
+  setTimeout(() => $('#slotCode').focus(), 100);
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+document.title = 'Aanvraagformulier lidmaatschap ' + CONFIG.clubKort;
+$('#clubNm').textContent = CONFIG.clubNaam;
+$('#clubSlogan').textContent = CONFIG.slogan;
+$('#disclaimer').textContent = CONFIG.disclaimer;
+$('#normenLink').href = CONFIG.normenUrl;
+$('#gedragLink').href = CONFIG.gedragscodeUrl;
+$('#ledenMail').textContent = CONFIG.ledenadministratieEmail || 'de ledenadministratie';
+$('#logo').src = CONFIG.logoDataUri || CONFIG.logoUrl;
+$('#logo').onerror = function () { this.style.display = 'none'; };
+
+/* Opzegdata-zin samenstellen uit CONFIG.opzegdata */
+function opzegZin() {
+  const d = Object.entries(CONFIG.opzegdata).filter(([, v]) => v);
+  if (!d.length) return '';
+  return 'Op dit moment geldt: ' + d.map(([s, v]) => `${v} (${s.toLowerCase()})`).join(', ') + '.';
+}
+function vulTekst(t) {
+  // Geen adres ingevuld? Dan schrijven we "de ledenadministratie" zonder e-mailadres.
+  const adres = CONFIG.ledenadministratieEmail || 'de ledenadministratie';
+  return t.split('{EMAIL}').join(adres)
+          .replace('{OPZEGDATA}', opzegZin());
+}
+
+$('#sportRow').innerHTML = CONFIG.sporten.map(s =>
+  `<label class="opt"><input type="radio" name="sport" value="${esc(s)}"> <span class="t">${esc(s)}</span></label>`).join('');
+
+for (const sel of [$('#nationality'), $('#nationality_second')]) {
+  sel.insertAdjacentHTML('beforeend', '<option value="">—</option>');
+  NATIONALITEITEN.forEach(n => sel.insertAdjacentHTML('beforeend',
+    `<option value="${esc(n)}"${n === 'Nederlandse' && sel.id === 'nationality' ? ' selected' : ''}>${esc(n)}</option>`));
+}
+
+const nu = new Date().getFullYear();
+for (let j = nu + 1; j >= nu - 15; j--)
+  $('#end').insertAdjacentHTML('beforeend', `<option value="${j}">${j}</option>`);
+
+$('#volGroups').innerHTML = VRIJWILLIGERSTAKEN.map((g, i) =>
+  `<div class="volgrp" data-sport="${g.sport || ''}">
+     <div class="grp">${esc(g.groep)}</div>
+     <div class="grid2">${g.items.map(t =>
+       `<label class="opt"><input type="checkbox" name="volunteering" value="${esc(t.id)}"
+          data-label="${esc(t.label)}" data-groep="${esc(g.groep)}">
+        <span style="font-weight:400">${esc(t.label)}</span></label>`).join('')}</div>
+   </div>`).join('');
+
+function vwBlok(v, open, id) {
+  return `<details class="vw"${open ? ' open' : ''}${id ? ` id="${id}"` : ''}>` +
+    `<summary>${esc(v.titel)}</summary><div class="bd">` +
+    (v.intro ? `<p>${esc(v.intro)}</p>` : '') +
+    `<ol>${v.items.map(t => `<li>${esc(vulTekst(t))}</li>`).join('')}</ol>` +
+    (v.slot ? `<p style="margin-top:9px">${esc(v.slot)}</p>` : '') +
+    `</div></details>`;
+}
+$('#vwBlokken').innerHTML =
+  CONFIG.voorwaarden.map((v, i) => vwBlok(v, i === 0)).join('') +
+  vwBlok(CONFIG.normen, false) +
+  vwBlok(CONFIG.gedragscode, false, 'gedragBlok');
+
+/* ============================================================================
+   CONDITIONELE LOGICA
+   ========================================================================== */
+let huidigeSport = '';
+
+$$('input[name="sport"]').forEach(r => r.addEventListener('change', () => {
+  huidigeSport = r.value;
+  const voetbal = huidigeSport === 'Voetbal';
+
+  // Sportlink-lidsoorten zijn voetbalspecifiek
+  $('#lidTypeField').classList.toggle('hidden', !voetbal);
+  $('#relField').classList.toggle('hidden', !voetbal);
+  if (!voetbal) $$('input[name="lid"]').forEach(i => { i.checked = false; });
+
+  // taakgroepen die aan een sport hangen
+  $$('.volgrp').forEach(g => {
+    const s = g.dataset.sport;
+    const toon = !s || s === huidigeSport;
+    g.classList.toggle('hidden', !toon);
+    if (!toon) g.querySelectorAll('input:checked').forEach(i => { i.checked = false; });
+  });
+
+  $('#vrijwHint').textContent =
+    'Onze vereniging is sterk afhankelijk van vrijwilligers. Welke bijdrage zou je kunnen leveren aan '
+    + CONFIG.clubKort + '?';
+  $('.volgrp[data-sport=""] .grp').textContent = 'Algemeen';
+}));
+
+$$('input[name="previous_membership"]').forEach(r =>
+  r.addEventListener('change', () => $('#prevBlock').classList.toggle('hidden', r.value !== '1' || !r.checked)));
+
+function leeftijdOp(datumStr, peil = new Date()) {
+  if (!datumStr) return null;
+  const d = new Date(datumStr);
+  if (isNaN(d)) return null;
+  let a = peil.getFullYear() - d.getFullYear();
+  const m = peil.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && peil.getDate() < d.getDate())) a--;
+  return a;
+}
+
+let isMinderjarig = false;
+let isJeugd = false;
+$('#birthdate').addEventListener('change', updateMinderjarig);
+
+/* Het contactblok wisselt in zijn geheel: bij een minderjarig lid staan hier de
+   gegevens van de ouder/verzorger in plaats van die van het lid. */
+function updateMinderjarig() {
+  const a = leeftijdOp($('#birthdate').value);
+  isMinderjarig = a !== null && a < 18;
+
+  $('#contactLegend').textContent = isMinderjarig
+    ? 'Contactgegevens ouder(s) / verzorger(s)' : 'Contactgegevens';
+  $('#contactHint').textContent = isMinderjarig
+    ? 'Het lid is jonger dan 18 jaar. De vereniging gebruikt onderstaande gegevens van de ouder of verzorger als contactadres.'
+    : '';
+  $('#contactHint').classList.toggle('hidden', !isMinderjarig);
+
+  $('#contactNameRow').classList.toggle('hidden', !isMinderjarig);
+  $('#contact_name').required = isMinderjarig;
+  $('#memberEmailRow').classList.toggle('hidden', !isMinderjarig);
+
+  $('#lblPhone1').innerHTML = (isMinderjarig ? 'Mobiel nummer ouder / verzorger' : 'Mobiel telefoonnummer')
+    + ' <span class="req">*</span>';
+  $('#lblPhone2').textContent = isMinderjarig
+    ? 'Tweede telefoonnummer (bijv. andere ouder)' : 'Tweede telefoonnummer';
+  $('#lblEmail').innerHTML = (isMinderjarig ? 'E-mailadres ouder / verzorger' : 'E-mailadres')
+    + ' <span class="req">*</span>';
+
+  $('#sigWho').textContent = isMinderjarig
+    ? 'Handtekening van de ouder/verzorger. Teken met de muis of je vinger.'
+    : 'Teken hieronder met je muis of vinger.';
+
+  // Jeugdspeler: de extra gedragsregels van het jeugdbestuur gelden tot en met
+  // CONFIG.jeugdTotLeeftijd (standaard 18, zodat O19 er nog onder valt).
+  isJeugd = a !== null && a <= CONFIG.jeugdTotLeeftijd;
+  $('#gedragRij').classList.toggle('hidden', !isJeugd);
+  $('#gedragBlok').classList.toggle('hidden', !isJeugd);
+  if (!isJeugd) $('#c_gedragscode').checked = false;
+}
+
+/* Naam in blokletters automatisch voorstellen */
+function vulBlokletters() {
+  const el = $('#naam_blokletters');
+  if (el.dataset.aangeraakt === '1') return;
+  const naam = isMinderjarig ? $('#contact_name').value.trim()
+    : [$('#firstname').value, $('#infix').value, $('#lastname').value].filter(v => v.trim()).join(' ');
+  el.value = naam.toUpperCase();
+}
+$('#naam_blokletters').addEventListener('input', e => { e.target.dataset.aangeraakt = '1'; });
+['#firstname', '#infix', '#lastname', '#contact_name', '#birthdate'].forEach(s =>
+  $(s).addEventListener('input', vulBlokletters));
+$('#city').addEventListener('input', () => {
+  const p = $('#plaats_ondertekening');
+  if (p.dataset.aangeraakt !== '1') p.value = $('#city').value;
+});
+$('#plaats_ondertekening').addEventListener('input', e => { e.target.dataset.aangeraakt = '1'; });
+
+/* ============================================================================
+   HANDTEKENINGCANVAS
+   ========================================================================== */
+const cv = $('#sig'), ctx = cv.getContext('2d');
+let tekenend = false, heeftHandtekening = false, ondertekendOp = null, laatst = null;
+
+function formatCanvas() {
+  // minimaal 3x zodat de handtekening ook scherp in de PDF belandt
+  const dpr = Math.max(window.devicePixelRatio || 1, 3);
+  const r = cv.getBoundingClientRect();
+  const data = heeftHandtekening ? cv.toDataURL() : null;
+  cv.width = Math.round(r.width * dpr);
+  cv.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, r.width, r.height);
+  ctx.strokeStyle = '#122433'; ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // De schrijflijn staat als CSS-achtergrond onder het canvas, zodat hij niet
+  // in de geexporteerde handtekening-PNG terechtkomt.
+  if (data) { const im = new Image(); im.onload = () => ctx.drawImage(im, 0, 0, r.width, r.height); im.src = data; }
+}
+formatCanvas();
+window.addEventListener('resize', formatCanvas);
+
+function punt(e) {
+  const r = cv.getBoundingClientRect();
+  const t = e.touches ? e.touches[0] : e;
+  return { x: t.clientX - r.left, y: t.clientY - r.top };
+}
+function start(e) { e.preventDefault(); tekenend = true; laatst = punt(e); }
+function beweeg(e) {
+  if (!tekenend) return;
+  e.preventDefault();
+  const p = punt(e);
+  ctx.beginPath(); ctx.moveTo(laatst.x, laatst.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+  laatst = p;
+  if (!heeftHandtekening) {
+    heeftHandtekening = true;
+    ondertekendOp = new Date();
+    $('#sigMeta').textContent = 'Ondertekend op ' + ondertekendOp.toLocaleString('nl-NL');
+    $('#sigField').classList.remove('invalid');
+  }
+}
+function stop() { tekenend = false; }
+
+cv.addEventListener('mousedown', start);   cv.addEventListener('touchstart', start, {passive:false});
+cv.addEventListener('mousemove', beweeg);  cv.addEventListener('touchmove', beweeg, {passive:false});
+window.addEventListener('mouseup', stop);  cv.addEventListener('touchend', stop);
+
+$('#sigClear').addEventListener('click', () => {
+  heeftHandtekening = false; ondertekendOp = null;
+  $('#sigMeta').textContent = 'Nog niet ondertekend';
+  formatCanvas();
+});
+
+/* Bijsnijden: alleen de getekende inkt, niet het hele canvas */
+function handtekeningPng() {
+  if (!heeftHandtekening) return null;
+  const w = cv.width, h = cv.height;
+  const d = ctx.getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = 0, y1 = 0, gevonden = false;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = (y * w + x) * 4;
+    // alleen ondoorzichtige, donkere inkt telt mee
+    if (d[i+3] > 40 && d[i] < 150 && d[i+1] < 150 && d[i+2] < 150) {
+      gevonden = true;
+      if (x < x0) x0 = x; if (x > x1) x1 = x;
+      if (y < y0) y0 = y; if (y > y1) y1 = y;
+    }
+  }
+  if (!gevonden) return null;
+  const pad = 10;
+  x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad);
+  x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(h - 1, y1 + pad);
+  const out = document.createElement('canvas');
+  out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+  const octx = out.getContext('2d');
+  octx.fillStyle = '#fff'; octx.fillRect(0, 0, out.width, out.height);
+  octx.drawImage(cv, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+  return out.toDataURL('image/png');
+}
+
+/* ============================================================================
+   GEGEVENS VERZAMELEN EN VALIDEREN
+   ========================================================================== */
+function veldGroep(el) { return el.closest('.f') || el.closest('fieldset'); }
+function markeer(el, fout) { const g = veldGroep(el); if (g) g.classList.toggle('invalid', fout); }
+
+function verzamel() {
+  const g = n => (document.querySelector(`[name="${n}"]`)?.value || '').trim();
+  const r = n => document.querySelector(`[name="${n}"]:checked`)?.value || '';
+  const taken = $$('input[name="volunteering"]:checked')
+    .filter(c => !c.closest('.hidden'))
+    .map(c => ({ id: c.value, label: c.dataset.label, groep: c.dataset.groep }));
+
+  const d = {
+    sport: r('sport'),
+    lid: r('lid'), lidLabel: LID_LABELS[r('lid')] || '',
+    eerderHdvs: r('eerder_hdvs'),
+    previous_membership: r('previous_membership'),
+    membership_clubname: g('membership_clubname'), end: g('end'),
+    relationnumber: g('relationnumber'),
+    gender: r('gender'), genderLabel: r('gender') === 'f' ? 'Vrouw' : r('gender') === 'm' ? 'Man' : '',
+    firstname: g('firstname'), initials: g('initials'), infix: g('infix'), lastname: g('lastname'),
+    nationality: g('nationality'), nationality_second: g('nationality_second'),
+    birthdate: g('birthdate'), leeftijd: leeftijdOp(g('birthdate')),
+    legitimatieSoort: g('legitimatie_soort'), legitimatieNummer: g('legitimatie_nummer'),
+    country: g('country'), postalcode: g('postalcode'), housenumber: g('housenumber'),
+    annex: g('annex'), streetname: g('streetname'), city: g('city'),
+
+    contactNaam:  isMinderjarig ? g('contact_name') : '',
+    phone1:       g('contact_phone1'),
+    phone1_nood:  $('#contact_phone1_nood').checked,
+    phone2:       g('contact_phone2'),
+    phone2_nood:  $('#contact_phone2_nood').checked,
+    email:        g('contact_email'),
+    memberEmail:  isMinderjarig ? g('member_email') : '',
+
+    taken, vrijwilligOverig: g('vrijwillig_overig'),
+    question: g('question'),
+
+    consent: {
+      ledenadmin:  $('#c_ledenadmin').checked,
+      communicatie:$('#c_communicatie').checked,
+      contributie: $('#c_contributie').checked,
+      normen:      $('#c_normen').checked,
+      gedragscode: $('#c_gedragscode').checked,
+      beeld:       $('#c_beeld').checked
+    },
+
+    blokletters: g('naam_blokletters'),
+    plaats: g('plaats_ondertekening'),
+    minderjarig: isMinderjarig,
+    jeugd: isJeugd,
+    ondertekendOp, seizoen: CONFIG.seizoen, club: CONFIG.clubNaam
+  };
+
+  d.noodnummers = [];
+  if (d.phone1 && d.phone1_nood) d.noodnummers.push(d.phone1);
+  if (d.phone2 && d.phone2_nood) d.noodnummers.push(d.phone2);
+  d.lidNaam = [d.firstname, d.infix, d.lastname].filter(Boolean).join(' ');
+  d.ondertekenaar = d.minderjarig ? d.contactNaam : d.lidNaam;
+  return d;
+}
+
+function geldigEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+function geldigTel(v) { return /^[\d\s+()-]{8,}$/.test(v); }
+
+function valideer() {
+  let ok = true;
+  const eersteFout = [];
+  const faal = el => { ok = false; eersteFout.push(el); };
+
+  $$('#frm [required]').forEach(el => {
+    if (el.type === 'radio' || el.type === 'checkbox') return;
+    if (el.closest('.hidden')) return;
+    const leeg = !el.value.trim();
+    markeer(el, leeg);
+    if (leeg) faal(el);
+  });
+
+  // radiogroepen
+  const radios = [['sport', '#sportRow'], ['gender', null]];
+  if ($('input[name="sport"]:checked')?.value === 'Voetbal') radios.push(['lid', null]);
+  radios.forEach(([n]) => {
+    const gekozen = !!document.querySelector(`[name="${n}"]:checked`);
+    const grp = document.querySelector(`[name="${n}"]`).closest('.f');
+    grp.classList.toggle('invalid', !gekozen);
+    if (!gekozen) faal(grp);
+  });
+
+  // verplichte toestemmingen
+  const verplichteConsents = ['#c_ledenadmin', '#c_communicatie', '#c_contributie', '#c_normen'];
+  if (isJeugd) verplichteConsents.push('#c_gedragscode');
+  const consentsOk = verplichteConsents.every(s => $(s).checked);
+  $('#consentErr').style.display = consentsOk ? 'none' : 'block';
+  if (!consentsOk) faal($('#consents'));
+
+  // contact-e-mail
+  const ea = $('#contact_email'), eb = $('#contact_email_repeat');
+  const foutA = !geldigEmail(ea.value.trim());
+  markeer(ea, foutA);
+  const foutB = ea.value.trim().toLowerCase() !== eb.value.trim().toLowerCase();
+  markeer(eb, foutB);
+  if (foutA || foutB) faal(foutA ? ea : eb);
+
+  const me = $('#member_email');
+  const meFout = isMinderjarig && me.value.trim() !== '' && !geldigEmail(me.value.trim());
+  markeer(me, meFout);
+  if (meFout) faal(me);
+
+  // telefoonnummers
+  const t1 = $('#contact_phone1'), t2 = $('#contact_phone2');
+  const t1Fout = !geldigTel(t1.value.trim());
+  markeer(t1, t1Fout);
+  if (t1Fout) faal(t1);
+  const t2Fout = t2.value.trim() !== '' && !geldigTel(t2.value.trim());
+  markeer(t2, t2Fout);
+  if (t2Fout) faal(t2);
+
+  // geboortedatum plausibel
+  const a = leeftijdOp($('#birthdate').value);
+  const datumFout = a === null || a < 3 || a > 100;
+  markeer($('#birthdate'), datumFout);
+  if (datumFout) faal($('#birthdate'));
+
+  // handtekening
+  $('#sigField').classList.toggle('invalid', !heeftHandtekening);
+  if (!heeftHandtekening) faal($('#sigField'));
+
+  if (!ok && eersteFout[0]) eersteFout[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return ok;
+}
+
+/* ============================================================================
+   PDF-GENERATIE (pdf-lib), in de huisstijl
+   ========================================================================== */
+const { PDFDocument, StandardFonts, rgb } = PDFLib;
+
+const NAVY  = rgb(0.071, 0.141, 0.200);
+const NAVY2 = rgb(0.173, 0.247, 0.310);
+const SKY   = rgb(0.584, 0.757, 0.910);
+const SAND  = rgb(0.910, 0.784, 0.584);
+const GRIJS = rgb(0.365, 0.443, 0.514);
+const LIJN  = rgb(0.843, 0.886, 0.925);
+
+function schoon(s) {
+  return String(s ?? '')
+    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+    .replace(/[–—]/g, '-').replace(/€/g, 'EUR')
+    .replace(/[^\x00-\xFF]/g, '?');
+}
+function datumNL(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return isNaN(d) ? iso : d.toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+let logoBytesCache;
+async function logoBytes() {
+  if (logoBytesCache !== undefined) return logoBytesCache;
+  try {
+    if (CONFIG.logoDataUri) logoBytesCache = CONFIG.logoDataUri;
+    else {
+      const r = await fetch(CONFIG.logoUrl, { mode: 'cors' });
+      if (!r.ok) throw new Error('status ' + r.status);
+      logoBytesCache = new Uint8Array(await r.arrayBuffer());
+    }
+  } catch (e) {
+    console.warn('Logo niet beschikbaar voor de PDF:', e.message);
+    logoBytesCache = null;
+  }
+  return logoBytesCache;
+}
+
+async function maakPdf(data) {
+  const pdf = await PDFDocument.create();
+  const reg = await pdf.embedFont(StandardFonts.Helvetica);
+  const vet = await pdf.embedFont(StandardFonts.HelveticaBold);
+  const cur = await pdf.embedFont(StandardFonts.HelveticaOblique);
+
+  const B = 595.28, H = 841.89, M = 48;
+  let page, y;
+
+  const lb = await logoBytes();
+  let logo = null;
+  if (lb) { try { logo = await pdf.embedPng(lb); } catch (e) { logo = null; } }
+
+  const png = handtekeningPng();
+  let sigImg = null;
+  if (png) { try { sigImg = await pdf.embedPng(png); } catch (e) { sigImg = null; } }
+
+  function nieuwePagina(eerste) {
+    page = pdf.addPage([B, H]);
+    if (eerste) {
+      page.drawRectangle({ x: 0, y: H - 104, width: B, height: 104, color: NAVY });
+      page.drawRectangle({ x: 0, y: H - 110, width: B, height: 6, color: SKY });
+      let tx = M;
+      if (logo) {
+        const s = 62 / logo.height;
+        page.drawImage(logo, { x: M, y: H - 84, width: logo.width * s, height: 62 });
+        tx = M + logo.width * s + 16;
+      }
+      page.drawText(schoon(CONFIG.clubNaam), { x: tx, y: H - 42, size: 17, font: vet, color: rgb(1,1,1) });
+      page.drawText(schoon('Aanvraagformulier lidmaatschap'), { x: tx, y: H - 60, size: 11, font: reg, color: rgb(1,1,1) });
+      page.drawText(schoon((data.sport || '') + '  ·  seizoen ' + data.seizoen),
+        { x: tx, y: H - 76, size: 10, font: reg, color: SKY });
+      y = H - 142;
+    } else {
+      page.drawRectangle({ x: 0, y: H - 8, width: B, height: 8, color: SKY });
+      y = H - M;
+    }
+  }
+  function ruimte(nodig) { if (y - nodig < M + 46) nieuwePagina(false); }
+
+  function kop(t) {
+    ruimte(48);
+    y -= 10;
+    page.drawRectangle({ x: M, y: y - 3, width: 3, height: 13, color: SAND });
+    page.drawText(schoon(t), { x: M + 10, y, size: 12, font: vet, color: NAVY });
+    y -= 8;
+    page.drawLine({ start: { x: M, y }, end: { x: B - M, y }, thickness: .8, color: LIJN });
+    y -= 17;
+  }
+
+  function wikkel(tekst, font, size, maxW) {
+    const woorden = schoon(tekst).split(/\s+/);
+    const regels = []; let r = '';
+    for (const w of woorden) {
+      const p = r ? r + ' ' + w : w;
+      if (font.widthOfTextAtSize(p, size) > maxW && r) { regels.push(r); r = w; }
+      else r = p;
+    }
+    if (r) regels.push(r);
+    return regels;
+  }
+
+  function regel(label, waarde, opt = {}) {
+    if (waarde === '' || waarde === null || waarde === undefined) return;
+    const labelW = 172, waardeW = B - M * 2 - labelW;
+    const regels = wikkel(waarde, reg, 10.5, waardeW);
+    ruimte(regels.length * 14 + 4);
+    page.drawText(schoon(label), { x: M, y, size: 9.5, font: reg, color: GRIJS });
+    regels.forEach((r, i) => page.drawText(r, {
+      x: M + labelW, y: y - i * 14, size: 10.5, font: vet, color: opt.kleur || NAVY }));
+    y -= regels.length * 14 + 4;
+  }
+
+  /* Genummerde voorwaardentekst */
+  function genummerd(nr, tekst) {
+    const inspring = 20, maxW = B - M * 2 - inspring;
+    const regels = wikkel(tekst, reg, 9, maxW);
+    ruimte(regels.length * 11.5 + 8);
+    page.drawText(nr + ')', { x: M, y, size: 9, font: vet, color: NAVY2 });
+    regels.forEach((r, i) => page.drawText(r, { x: M + inspring, y: y - i * 11.5, size: 9, font: reg, color: NAVY2 }));
+    y -= regels.length * 11.5 + 7;
+  }
+
+  function vinkje(aan, tekst) {
+    const inspring = 18, maxW = B - M * 2 - inspring;
+    const regels = wikkel(tekst, reg, 9.5, maxW);
+    ruimte(regels.length * 12 + 8);
+    page.drawRectangle({ x: M, y: y - 1, width: 9, height: 9, borderWidth: .9,
+      borderColor: GRIJS, color: aan ? NAVY : rgb(1, 1, 1) });
+    if (aan) {
+      page.drawLine({ start: { x: M + 2, y: y + 3.2 }, end: { x: M + 3.8, y: y + 1 }, thickness: 1.2, color: rgb(1,1,1) });
+      page.drawLine({ start: { x: M + 3.8, y: y + 1 }, end: { x: M + 7, y: y + 6.5 }, thickness: 1.2, color: rgb(1,1,1) });
+    }
+    regels.forEach((r, i) => page.drawText(r, { x: M + inspring, y: y - i * 12, size: 9.5, font: reg, color: NAVY2 }));
+    y -= regels.length * 12 + 6;
+  }
+
+  nieuwePagina(true);
+
+  // Disclaimer bovenaan, net als op het papieren formulier
+  wikkel(CONFIG.disclaimer, cur, 9, B - M * 2).forEach(r => {
+    page.drawText(r, { x: M, y, size: 9, font: cur, color: GRIJS }); y -= 11.5;
+  });
+  y -= 6;
+
+  kop('Aanvraag');
+  regel('Sport', data.sport);
+  if (data.lidLabel) regel('Type lidmaatschap', data.lidLabel);
+  regel('Eerder lid van ' + CONFIG.clubKort, data.eerderHdvs === '1' ? 'Ja' : 'Nee');
+  regel('Lid geweest bij andere vereniging', data.previous_membership === '1' ? 'Ja' : 'Nee');
+  if (data.previous_membership === '1') {
+    regel('Welke vereniging', data.membership_clubname);
+    regel('Tot wanneer', data.end);
+    regel('Relatienummer', data.relationnumber);
+  }
+
+  kop('Gegevens van het lid');
+  regel('Achternaam', [data.infix, data.lastname].filter(Boolean).join(' '));
+  regel('Voorna(a)m(en)', data.firstname);
+  regel('Voorletters', data.initials);
+  regel('Geslacht', data.genderLabel);
+  regel('Geboortedatum', datumNL(data.birthdate) + (data.leeftijd !== null ? `   (${data.leeftijd} jaar)` : ''));
+  regel('Nationaliteit', data.nationality);
+  regel('Tweede nationaliteit', data.nationality_second);
+  regel('Legitimatie', [data.legitimatieSoort, data.legitimatieNummer].filter(Boolean).join('   nr. '));
+
+  kop('Adres');
+  regel('Adres', [data.streetname, data.housenumber, data.annex].filter(Boolean).join(' '));
+  regel('Postcode en woonplaats', [data.postalcode, data.city].filter(Boolean).join('  '));
+  regel('Land', data.country === 'NL' ? 'Nederland' : data.country);
+
+  kop(data.minderjarig ? 'Contactgegevens ouder(s) / verzorger(s)' : 'Contactgegevens');
+  if (data.minderjarig) regel('Ouder(s) / verzorger(s)', data.contactNaam);
+  regel('Mobiel telefoonnummer', data.phone1 + (data.phone1_nood ? '   (noodnummer)' : ''));
+  regel('Tweede telefoonnummer', data.phone2 ? data.phone2 + (data.phone2_nood ? '   (noodnummer)' : '') : '');
+  regel('E-mailadres', data.email);
+  if (data.memberEmail) regel('E-mail lid zelf', data.memberEmail);
+
+  if (data.noodnummers.length) {
+    ruimte(34);
+    const h = 26;
+    page.drawRectangle({ x: M, y: y - h + 12, width: B - M * 2, height: h, color: rgb(0.918, 0.953, 0.984) });
+    page.drawRectangle({ x: M, y: y - h + 12, width: 3, height: h, color: SKY });
+    page.drawText(schoon('Noodnummer tijdens trainingen en wedstrijden:  ' + data.noodnummers.join('   /   ')),
+      { x: M + 12, y: y, size: 10, font: vet, color: NAVY2 });
+    y -= h + 8;
+  } else {
+    regel('Noodnummer', 'Geen nummer vrijgegeven als noodnummer', { kleur: NAVY2 });
+  }
+
+  kop('Vrijwilligerswerk');
+  if (data.taken.length) data.taken.forEach(t => regel('', t.label));
+  if (data.vrijwilligOverig) regel('Overig', data.vrijwilligOverig);
+  if (!data.taken.length && !data.vrijwilligOverig) regel('', 'Geen bijdrage aangegeven');
+
+  if (data.question) { kop('Opmerkingen / bijzonderheden'); regel('', data.question); }
+
+  // --- Voorwaarden ---
+  CONFIG.voorwaarden.forEach(v => {
+    ruimte(120);           // kop niet los onderaan een pagina laten vallen
+    kop(v.titel);
+    v.items.forEach((t, i) => genummerd(i + 1, vulTekst(t)));
+  });
+
+  // --- Reglementen, integraal in het document ---
+  function reglement(r) {
+    ruimte(120);
+    kop(r.titel);
+    if (r.intro) {
+      wikkel(r.intro, cur, 9, B - M * 2).forEach(t => {
+        page.drawText(t, { x: M, y, size: 9, font: cur, color: GRIJS }); y -= 11.5;
+      });
+      y -= 6;
+    }
+    r.items.forEach((t, i) => genummerd(i + 1, t));
+    if (r.slot) {
+      y -= 2;
+      wikkel(r.slot, reg, 9, B - M * 2).forEach(t => {
+        page.drawText(t, { x: M, y, size: 9, font: reg, color: NAVY2 }); y -= 11.5;
+      });
+      y -= 6;
+    }
+  }
+  reglement(CONFIG.normen);
+  if (data.jeugd) reglement(CONFIG.gedragscode);
+
+  // --- Toestemmingen: in één blok houden ---
+  ruimte(data.jeugd ? 175 : 150);
+  kop('Toestemmingen');
+  vinkje(data.consent.ledenadmin,
+    'Toestemming om mijn gegevens in de ledenadministratie van ' + CONFIG.clubKort + ' te verwerken en op te nemen.');
+  vinkje(data.consent.communicatie,
+    'Ik weet dat ' + CONFIG.clubKort + ' en ingeschakelde bedrijven via e-mail communiceren, en dat ik ' +
+    'wijzigingen in mijn e-mailadres of mobiele nummer direct en schriftelijk moet doorgeven.');
+  vinkje(data.consent.contributie,
+    'Akkoord met de contributievoorwaarden en de voorwaarden voor beëindiging van het lidmaatschap.');
+  vinkje(data.consent.normen,
+    'Kennisgenomen van en akkoord met de normen en waarden "de 10 van ' + CONFIG.clubKort + '".');
+  if (data.jeugd) vinkje(data.consent.gedragscode,
+    'Kennisgenomen van en akkoord met de extra gedragsregels voor jeugdspelers van het jeugdbestuur.');
+  vinkje(data.consent.beeld,
+    'Toestemming voor het delen van beeldmateriaal en tekst op social media, de website en andere ' +
+    'platforms van ' + CONFIG.clubKort + '. (Optioneel; kan later worden ingetrokken via ' +
+    CONFIG.ledenadministratieEmail + '.)');
+
+  // --- Ondertekening ---
+  ruimte(200);
+  kop('Ondertekening');
+  const verklaring =
+    'Ondergetekende verklaart dit aanvraagformulier naar waarheid te hebben ingevuld en zich te kunnen ' +
+    'verenigen met al hetgeen hierin staat vermeld, waaronder de normen en waarden van ' + CONFIG.clubKort +
+    ', genoemd "de 10 van ' + CONFIG.clubKort + '"' +
+    (data.jeugd ? ' en de extra gedragsregels voor jeugdspelers' : '') + '.';
+  wikkel(verklaring, reg, 9.5, B - M * 2).forEach(r => {
+    page.drawText(r, { x: M, y, size: 9.5, font: reg, color: GRIJS }); y -= 13;
+  });
+  y -= 18;
+
+  const dt = data.ondertekendOp || new Date();
+  const sigY = y - 78;
+  if (sigImg) {
+    const maxW = 210, maxH = 66;
+    const s = Math.min(maxW / sigImg.width, maxH / sigImg.height);
+    page.drawImage(sigImg, { x: M, y: sigY + 12, width: sigImg.width * s, height: sigImg.height * s });
+  }
+  page.drawLine({ start: { x: M, y: sigY + 6 }, end: { x: M + 230, y: sigY + 6 }, thickness: .8, color: LIJN });
+  page.drawText(schoon(data.minderjarig ? '(handtekening ouder / verzorger)' : '(handtekening)'),
+    { x: M, y: sigY - 8, size: 8.5, font: reg, color: GRIJS });
+
+  page.drawText(schoon('Datum: ' + dt.toLocaleDateString('nl-NL')), {
+    x: M + 270, y: sigY + 40, size: 10.5, font: vet, color: NAVY });
+  page.drawText(schoon('Plaats: ' + (data.plaats || '')), {
+    x: M + 270, y: sigY + 22, size: 10.5, font: vet, color: NAVY });
+  page.drawText(schoon(data.blokletters), {
+    x: M + 270, y: sigY + 1, size: 11, font: vet, color: NAVY });
+  page.drawLine({ start: { x: M + 270, y: sigY - 4 }, end: { x: B - M, y: sigY - 4 }, thickness: .8, color: LIJN });
+  page.drawText(schoon('(naam in blokletters)'), {
+    x: M + 270, y: sigY - 18, size: 8.5, font: reg, color: GRIJS });
+  y = sigY - 40;
+
+  // Contactregel: waar dit formulier heen moet en waar vragen heen kunnen
+  if (CONFIG.ledenadministratieEmail) {
+    ruimte(40);
+    y -= 14;
+    page.drawRectangle({ x: M, y: y - 9, width: B - M * 2, height: 26, color: rgb(0.949, 0.965, 0.980) });
+    page.drawRectangle({ x: M, y: y - 9, width: 3, height: 26, color: SAND });
+    page.drawText(schoon('Ingevuld formulier en vragen naar: ' + CONFIG.ledenadministratieEmail),
+      { x: M + 12, y: y + 2, size: 9.5, font: vet, color: NAVY2 });
+    y -= 34;
+  }
+
+  // Voettekst + paraaf op elke pagina
+  const paginas = pdf.getPages();
+  paginas.forEach((p, i) => {
+    p.drawLine({ start: { x: M, y: 46 }, end: { x: B - M, y: 46 }, thickness: .8, color: LIJN });
+    p.drawText(schoon(`${CONFIG.clubKort}  ·  aanvraag ${data.lidNaam}  ·  ` +
+      `${dt.toLocaleString('nl-NL')}  ·  pagina ${i + 1} van ${paginas.length}`),
+      { x: M, y: 32, size: 7.5, font: reg, color: GRIJS });
+    if (sigImg) {
+      const hh = 20, s = hh / sigImg.height;
+      p.drawImage(sigImg, { x: B - M - sigImg.width * s, y: 26, width: sigImg.width * s, height: hh, opacity: 0.85 });
+      p.drawText(schoon('paraaf'), { x: B - M - 34, y: 18, size: 6, font: reg, color: GRIJS });
+    }
+  });
+
+  pdf.setTitle(`Aanvraag lidmaatschap ${data.lidNaam} — ${CONFIG.clubKort}`);
+  pdf.setSubject(`${data.sport} · seizoen ${data.seizoen}`);
+  pdf.setProducer(CONFIG.clubNaam);
+  pdf.setCreationDate(dt);
+
+  return pdf.save();
+}
+
+/* ============================================================================
+   PDF AFLEVEREN
+   ========================================================================== */
+function bestandsnaam(data, ext) {
+  const n = [data.lastname, data.firstname].filter(Boolean).join('-')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9-]/g, '') || 'aanvraag';
+  const d = new Date().toISOString().slice(0, 10);
+  return `aanvraag-${n}-${d}.${ext}`;
+}
+/* Blob-URL's blijven 10 minuten geldig, zodat de knoppen in de statusmelding
+   ook op een telefoon nog werken nadat het downloaden is mislukt of geweigerd. */
+function blobUrl(blob) {
+  const url = URL.createObjectURL(blob);
+  setTimeout(() => URL.revokeObjectURL(url), 600000);
+  return url;
+}
+function download(blob, naam) {
+  const a = document.createElement('a');
+  a.href = blobUrl(blob); a.download = naam;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* iOS/iPadOS staat maar één download per handeling toe en heeft geen
+   downloadmap-gevoel; daar is delen via het systeemmenu de betere route. */
+function kanDelen(files) {
+  try { return !!(navigator.canShare && navigator.canShare({ files })); }
+  catch (e) { return false; }
+}
+function meld(tekst, goed = true) {
+  const s = $('#status');
+  s.className = goed ? 'ok' : 'bad';
+  s.innerHTML = tekst;
+}
+
+/* ============================================================================
+   AFHANDELING
+   ========================================================================== */
+$('#previewBtn').addEventListener('click', async () => {
+  // Het tabblad moet binnen de klik geopend worden, anders blokkeert Safari het.
+  const w = window.open('', '_blank');
+  const data = verzamel();
+  const bytes = await maakPdf(data);
+  const url = blobUrl(new Blob([bytes], { type: 'application/pdf' }));
+  if (w && !w.closed) w.location = url;
+  else window.location = url;   // popup geblokkeerd: in hetzelfde tabblad tonen
+});
+
+$('#frm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!valideer()) { meld('Er ontbreken nog gegevens. De velden zijn hierboven gemarkeerd.', false); return; }
+
+  const btn = $('#submitBtn');
+  btn.disabled = true; btn.textContent = 'Bezig…';
+
+  try {
+    const data    = verzamel();
+    const bytes   = await maakPdf(data);
+    const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
+    const pdfNaam = bestandsnaam(data, 'pdf');
+    const pdfFile = new File([pdfBlob], pdfNaam, { type: 'application/pdf' });
+
+    // Op desktop en Android werkt automatisch downloaden; op iOS meestal niet.
+    // De knoppen in de statusmelding zijn daar de betrouwbare route.
+    download(pdfBlob, pdfNaam);
+
+    const deelbaar = kanDelen([pdfFile]);
+    const knoppen =
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">' +
+      `<a href="${blobUrl(pdfBlob)}" target="_blank" rel="noopener" download="${pdfNaam}"` +
+      ' style="text-decoration:none"><button type="button">PDF openen of opslaan</button></a>' +
+      (deelbaar ? '<button type="button" id="deelBtn">Delen of mailen…</button>' : '') +
+      '</div>';
+
+    const naarWie = data.email
+      ? `<strong>${data.email}</strong>` + (data.memberEmail ? ` en ${data.memberEmail}` : '')
+      : 'het opgegeven e-mailadres';
+    const naarLeden = CONFIG.ledenadministratieEmail
+      ? `<strong>${CONFIG.ledenadministratieEmail}</strong>` : 'de ledenadministratie';
+
+    meld('<strong>PDF aangemaakt.</strong> Verstuur hem naar ' + naarWie +
+         ' en naar ' + naarLeden + '. Daarna kun je dit formulier leegmaken ' +
+         'voor de volgende aanmelding.' + knoppen +
+         '<div style="margin-top:12px"><button type="button" id="nieuwBtn">Formulier leegmaken</button></div>');
+
+    // Delen moet binnen een eigen tik gebeuren, vandaar een aparte knop.
+    const deelBtn = $('#deelBtn');
+    if (deelBtn) deelBtn.addEventListener('click', async () => {
+      try {
+        await navigator.share({ files: [pdfFile], title: 'Aanvraag lidmaatschap ' + data.lidNaam });
+      } catch (err) {
+        if (err.name !== 'AbortError') console.warn('Delen mislukt:', err);
+      }
+    });
+
+    $('#nieuwBtn').addEventListener('click', () => {
+      if (confirm('Formulier leegmaken voor een nieuwe aanmelding?')) location.reload();
+    });
+
+  } catch (err) {
+    console.error(err);
+    meld('Er ging iets mis bij het aanmaken van de PDF: ' + err.message, false);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Aanvraag versturen';
+  }
+});
+
+slotInstellen();
+updateMinderjarig();
+$('#c_beeld').checked = CONFIG.beeldStandaardAan === true;
+$('#vrijwHint').textContent =
+  'Onze vereniging is sterk afhankelijk van vrijwilligers. Welke bijdrage zou je kunnen leveren aan '
+  + CONFIG.clubKort + '?';
+$$('.volgrp[data-sport]:not([data-sport=""])').forEach(g => g.classList.add('hidden'));
+// Sportlink-lidsoorten pas tonen zodra voor voetbal gekozen is
+$('#lidTypeField').classList.add('hidden');
+$('#relField').classList.add('hidden');
+</script>
+</body>
+</html>
